@@ -6,7 +6,6 @@ namespace Netglue\RevsTest;
 use Netglue\Revs\RevverOptions;
 use PHPUnit\Framework\TestCase;
 use function rmdir;
-use Throwable;
 
 class RevverOptionsTest extends TestCase
 {

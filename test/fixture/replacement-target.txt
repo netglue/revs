@@ -1,0 +1,4 @@
+"empty.txt"
+/some/relative/path/empty.txt
+/some/relative/path/empty-1356c67d7ad1638d816bfb822dd2c25d-a8c71744-bdaa-11e8-820f-787b8ac8307f.txt
+/should/not/replace/this-1356c67d7ad1638d816bfb822dd2c25d-a8c71744-bdaa-11e8-820f-787b8ac8307f.txt

@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace Netglue\Revs;
 
-use const DIRECTORY_SEPARATOR;
 use InvalidArgumentException;
 use OutOfRangeException;
-use function rtrim;
 use RuntimeException;
 use function array_map;
 use function explode;
@@ -16,7 +14,9 @@ use function is_dir;
 use function is_string;
 use function is_writable;
 use function method_exists;
+use function rtrim;
 use function sprintf;
+use const DIRECTORY_SEPARATOR;
 
 class RevverOptions
 {
