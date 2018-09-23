@@ -15,7 +15,8 @@
         }
     ],
     "require": {
-        "ramsey/uuid": "^3"
+        "ramsey/uuid": "^3",
+        "symfony/console": "^4"
     },
     "autoload": {
         "psr-4": {
