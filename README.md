@@ -1,5 +1,7 @@
 # Filename Hashing Revisions & Automatic Cleanup
 
+[![Build Status](https://travis-ci.org/netglue/revs.svg?branch=master)](https://travis-ci.org/netglue/revs)
+
 Probably re-inventing the wheel here, but I wanted to be able to rev front-end resource file names in a predictable way with options to automatically delete old revisions keeping either none of them or a specific number of the most recent ones. There are javascript tools that do this but at the time of writing, I couldn't find anything I liked in JS land that you could just fire off from an npm package script easily. There's plenty for Grunt and Gulp if you're using those.
 
 The main use-case for this lib is to be triggered by a script in your `package.json` something like this:
