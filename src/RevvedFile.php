@@ -14,10 +14,10 @@ class RevvedFile
     /** @var string */
     private $matchPattern;
 
-    /** @var iterable */
+    /** @var array */
     private $deletedRevisions;
 
-    public function __construct(string $source, string $destination, string $matchPattern, ?iterable $unlinked = null)
+    public function __construct(string $source, string $destination, string $matchPattern, ?array $unlinked = null)
     {
         $this->sourceFile = $source;
         $this->destinationFile = $destination;
@@ -35,7 +35,7 @@ class RevvedFile
         return $this->destinationFile;
     }
 
-    public function deletedRevisions() : iterable
+    public function deletedRevisions() : array
     {
         return $this->deletedRevisions;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Netglue\Revs;
 
 use InvalidArgumentException;
+use RuntimeException;
 use function basename;
 use function file_get_contents;
 use function file_put_contents;
@@ -48,9 +49,16 @@ class Replacer
                 $sourceFile
             ));
         }
+        $content = file_get_contents($sourceFile);
+        if (! $content) {
+            throw new RuntimeException(sprintf(
+                'Cannot read the contents of the file %s',
+                $sourceFile
+            ));
+        }
         file_put_contents(
             $sourceFile,
-            self::replaceInString(file_get_contents($sourceFile), $info, $count)
+            self::replaceInString($content, $info, $count)
         );
         return $count;
     }

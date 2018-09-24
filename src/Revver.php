@@ -102,8 +102,7 @@ class Revver
             preg_quote($basename, '#'),
             $hashPattern,
             $uuidPattern,
-            preg_quote($extension, '#'),
-            preg_quote($sourceFileBasename, '#')
+            preg_quote($extension, '#')
         );
     }
 
