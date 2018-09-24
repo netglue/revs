@@ -49,7 +49,7 @@ class RevCommandTest extends TestCase
             '-t' => 'dir-doesnt-exist',
         ]);
         $output = $tester->getDisplay();
-        $this->assertContains('The given destination directory is not a directory', $output);
+        $this->assertContains('[ERROR]', $output);
         $this->assertEquals(-1, $tester->getStatusCode());
     }
 
@@ -63,7 +63,7 @@ class RevCommandTest extends TestCase
             '-s' => __DIR__ . '/*.notThere',
         ]);
         $output = $tester->getDisplay();
-        $this->assertContains('yielded no source files to process', $output);
+        $this->assertContains('[WARNING]', $output);
         $this->assertEquals(0, $tester->getStatusCode());
     }
 
@@ -80,7 +80,7 @@ class RevCommandTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
         ]);
         $output = $tester->getDisplay();
-        $expect = sprintf('empty.txt copied as', $source);
+        $expect = sprintf('[OK]', $source);
         $this->assertContains($expect, $output);
         $this->assertEquals(0, $tester->getStatusCode());
     }
