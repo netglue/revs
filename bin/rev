@@ -6,9 +6,9 @@ use Netglue\Revs\Command\RevCommand;
 use Symfony\Component\Console\Application;
 
 $composerSearch = [
-    __DIR__ . '/../../autoload.php',
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php', // Installed in vendor/name/pkg/bin/file
+    __DIR__ . '/../vendor/autoload.php', // Installed in bin/file
+    __DIR__ . '/vendor/autoload.php', // Installed in src/file
 ];
 
 foreach ($composerSearch as $file) {
