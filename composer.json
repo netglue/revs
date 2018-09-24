@@ -2,21 +2,31 @@
     "name": "netglue/revs",
     "description": "Simple utility for revving file name versions and deleting old revisions",
     "type": "library",
+    "license": "MIT",
+    "authors" : [
+        {
+            "name" : "George Steel",
+            "email" : "george@net-glue.co.uk",
+            "homepage" : "https://netglue.uk/"
+        }
+    ],
+    "config" : {
+        "minimum-stability" : "stable",
+        "prefer-stable" : true,
+        "sort-packages": true
+    },
+    "bin": [
+        "bin/rev"
+    ],
+    "require": {
+        "php": ">=7.1",
+        "ramsey/uuid": "^3",
+        "symfony/console": "^4"
+    },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3",
         "phpunit/phpunit": "^7",
         "phpstan/phpstan": "^0.10"
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "George Steel",
-            "email": "george@net-glue.co.uk"
-        }
-    ],
-    "require": {
-        "ramsey/uuid": "^3",
-        "symfony/console": "^4"
     },
     "autoload": {
         "psr-4": {
