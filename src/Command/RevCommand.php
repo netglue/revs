@@ -89,7 +89,15 @@ class RevCommand extends Command
             return (-1);
         }
         $revver = new Revver($options);
-        foreach (glob($input->getOption('source')) as $file) {
+        $sources = glob($input->getOption('source'));
+        if (! count($sources)) {
+            $this->io->warning(sprintf(
+                'The --source|-s argument %s yielded no source files to process',
+                $input->getOption('source')
+            ));
+            return 0;
+        }
+        foreach ($sources as $file) {
             $revvedFile = $revver->revFile($file);
             if ($output->isVerbose()) {
                 $this->io->success(sprintf(
