@@ -1,12 +1,21 @@
 # Filename Hashing Revisions & Automatic Cleanup
 
-Probably re-inventing the wheel here, but I wanted to be able to rev front-end resource file names in a predictable way with options to automatically delete old revisions keeping either none of them or a specific number of the most recent ones.
+Probably re-inventing the wheel here, but I wanted to be able to rev front-end resource file names in a predictable way with options to automatically delete old revisions keeping either none of them or a specific number of the most recent ones. There are javascript tools that do this but at the time of writing, I couldn't find anything I liked in JS land that you could just fire off from an npm package script easily. There's plenty for Grunt and Gulp if you're using those.
+
+The main use-case for this lib is to be triggered by a script in your `package.json` something like this:
+```json
+{
+    "scripts": {
+        "css:rev": "vendor/bin/rev netglue:rev -s \"build/css/*.css\" -t \"public/assets/css\" -d -c 1 -r \"module/layouts/*.phtml\""
+    }
+}
+```
 
 ## Install with composer:
-
-    composer require netglue/revs
-
-In order to use the tools, make sure that you've `require`d composers `vendor/autoload.php`
+```bash
+composer require netglue/revs
+```
+In order to use the tools, make sure that you've `require`d composers `vendor/autoload.php`, or [use the shipped binary](#symfony-command) in `vendor/bin/rev`
 
 ## Operation
 
@@ -91,3 +100,27 @@ foreach ($files as $html) {
 printf('Replaced %d references over %d files', $count, count($files));
 
 ```
+
+## Symfony Command
+
+Composer will create a binary in `vendor/bin/rev` after installation which you can call from build scripts. There’s straightforward help in the command itself so just issue `vendor/bin/rev netglue:rev --help` to get an overview of the options.
+
+## Test
+
+`cd` to wherever the module is installed, issue a `composer install` followed by a `composer check`.
+
+## Contributions
+
+PR's are welcomed. Please write tests for new features.
+
+## Support
+
+You're welcome to file issues, but please understand that finding the time to answer support requests is very limited
+so there might be a long wait for an answer.
+
+
+## About
+
+[Netglue makes websites and apps in Devon, England](https://netglue.uk).
+We hope this is useful to you and we’d appreciate feedback either way :)
+
