@@ -20,8 +20,8 @@
     ],
     "require": {
         "php": ">=7.1",
-        "ramsey/uuid": "^3",
-        "symfony/console": "^4"
+        "ramsey/uuid": "^3.8",
+        "symfony/console": "^3||^4"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3",
