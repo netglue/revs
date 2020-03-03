@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace Netglue\RevsTest;
 
+use InvalidArgumentException;
 use Netglue\Revs\RevverOptions;
+use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use function rmdir;
 
 class RevverOptionsTest extends TestCase
 {
-    public function testFromArray()
+    public function testFromArray() : void
     {
         $options = [
             'clean_up' => true,
@@ -20,53 +23,41 @@ class RevverOptionsTest extends TestCase
         $this->assertSame(10, $object->revisionCount());
     }
 
-    /**
-     * @expectedExceptionMessage There’s no method by that name
-     * @expectedException \InvalidArgumentException
-     */
-    public function testExceptionThrownForUnknownOptions()
+    public function testExceptionThrownForUnknownOptions() : void
     {
         $options = ['foo' => 'bar'];
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('There’s no method by that name');
         RevverOptions::fromArray($options);
     }
 
-    /**
-     * @expectedExceptionMessage Expected all option keys to be strings
-     * @expectedException \InvalidArgumentException
-     */
-    public function testExceptionThrownForIntegerKeys()
+    public function testExceptionThrownForIntegerKeys() : void
     {
         $options = [0 => 'bar'];
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expected all option keys to be strings');
         RevverOptions::fromArray($options);
     }
 
-    /**
-     * @expectedExceptionMessage The revision count must an integer greater than or equal to 0
-     * @expectedException \OutOfRangeException
-     */
-    public function testRevisionCountMustBeAnIntegerBiggerThanZero()
+    public function testRevisionCountMustBeAnIntegerBiggerThanZero() : void
     {
         $options = ['revisionCount' => -1];
+        $this->expectException(OutOfRangeException::class);
+        $this->expectExceptionMessage('The revision count must an integer greater than or equal to 0');
         RevverOptions::fromArray($options);
     }
 
-    /**
-     * @expectedExceptionMessage The given destination directory is not a directory
-     * @expectedException \InvalidArgumentException
-     */
-    public function testDestinationMustBeADirectory()
+    public function testDestinationMustBeADirectory() : void
     {
         $options = [
             'destinationDirectory' => __FILE__,
         ];
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The given destination directory is not a directory');
         RevverOptions::fromArray($options);
     }
 
-    /**
-     * @expectedExceptionMessage The destination directory provided cannot be written to
-     * @expectedException \InvalidArgumentException
-     */
-    public function testNonWritableDirectoryIsExceptional()
+    public function testNonWritableDirectoryIsExceptional() : void
     {
         $dir = __DIR__ . '/var';
         if (! file_exists($dir)) {
@@ -75,19 +66,19 @@ class RevverOptionsTest extends TestCase
         chmod($dir, 0500);
         $options = ['destinationDirectory' => $dir];
         try {
+            $this->expectException(InvalidArgumentException::class);
+            $this->expectExceptionMessage('The destination directory provided cannot be written to');
             RevverOptions::fromArray($options);
         } finally {
             rmdir($dir);
         }
     }
 
-    /**
-     * @expectedExceptionMessage The destination directory has not been set
-     * @expectedException \RuntimeException
-     */
-    public function testDestinationRetrievalIsExceptionalWhenUnset()
+    public function testDestinationRetrievalIsExceptionalWhenUnset() : void
     {
         $options = new RevverOptions();
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('The destination directory has not been set');
         $options->destinationDirectory();
     }
 }

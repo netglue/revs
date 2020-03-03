@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Netglue\RevsTest;
 
+use InvalidArgumentException;
 use Netglue\Revs\RevvedFile;
 use Netglue\Revs\Revver;
 use Netglue\Revs\RevverOptions;
@@ -20,7 +21,7 @@ class RevverTest extends TestCase
     /** @var Revver */
     private $revver;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $this->options = RevverOptions::fromArray([
@@ -29,7 +30,7 @@ class RevverTest extends TestCase
         $this->revver = new Revver($this->options);
     }
 
-    public function testRevFile()
+    public function testRevFile() : void
     {
         $sourceFile = __DIR__  . '/fixture/empty.txt';
         $info = $this->revver->revFile($sourceFile);
@@ -39,7 +40,7 @@ class RevverTest extends TestCase
         $this->assertStringEndsWith('.txt', $info->destination());
     }
 
-    public function testRevFileWithoutExtension()
+    public function testRevFileWithoutExtension() : void
     {
         $sourceFile = __DIR__  . '/fixture/no-extension';
         $info = $this->revver->revFile($sourceFile);
@@ -47,32 +48,28 @@ class RevverTest extends TestCase
         $this->assertStringStartsWith('no-extension', basename($info->destination()));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The given argument is not a file
-     */
-    public function testExceptionThrownForNonFile()
+    public function testExceptionThrownForNonFile() : void
     {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The given argument is not a file');
         $this->revver->revFile(__DIR__);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The given file cannot be read
-     */
-    public function testExceptionThrownForUnreadableFile()
+    public function testExceptionThrownForUnreadableFile() : void
     {
         $file = $this->varDir . '/no-read.txt';
         try {
             touch($file);
             chmod($file, 0200);
+            $this->expectException(InvalidArgumentException::class);
+            $this->expectExceptionMessage('The given file cannot be read');
             $this->revver->revFile($file);
         } finally {
             unlink($file);
         }
     }
 
-    public function testMultipleRevsAndCleanup()
+    public function testMultipleRevsAndCleanup() : void
     {
         // Current options mean that the first 3 revs will be kept on disk:
         $sourceFile = __DIR__  . '/fixture/empty.txt';
@@ -111,7 +108,7 @@ class RevverTest extends TestCase
         $this->assertContains($secondRev->destination(), $deleted);
     }
 
-    public function testThatNewRevWillNotBeDeletedWhenRevisionCountIsZero()
+    public function testThatNewRevWillNotBeDeletedWhenRevisionCountIsZero() : void
     {
         $options = RevverOptions::fromArray([
             'destinationDirectory' => $this->varDir,
@@ -125,7 +122,7 @@ class RevverTest extends TestCase
         $this->assertCount(0, $info->deletedRevisions());
     }
 
-    public function testThatLastRevWillNotBeDeletedWhenRevisionCountIs1()
+    public function testThatLastRevWillNotBeDeletedWhenRevisionCountIs1() : void
     {
         $options = RevverOptions::fromArray([
             'destinationDirectory' => $this->varDir,
@@ -159,7 +156,7 @@ class RevverTest extends TestCase
         $this->assertSame($firstRev->destination(), current($deleted));
     }
 
-    public function testThatFilenameIsUnchangedWhenSourceFileContentHashIsTheSame()
+    public function testThatFilenameIsUnchangedWhenSourceFileContentHashIsTheSame() : void
     {
         $sourceFile = __DIR__  . '/fixture/empty.txt';
         $firstRev = $this->revver->revFile($sourceFile);
@@ -168,7 +165,7 @@ class RevverTest extends TestCase
         $this->assertTrue(file_exists($firstRev->destination()));
     }
 
-    public function testThatRemovingOldRevsOnlyAppliesToCorrectlyNamedFile()
+    public function testThatRemovingOldRevsOnlyAppliesToCorrectlyNamedFile() : void
     {
         $firstSource  = __DIR__  . '/fixture/no-extension';
         $secondSource = __DIR__  . '/fixture/empty.txt';

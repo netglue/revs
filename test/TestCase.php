@@ -11,7 +11,7 @@ class TestCase extends PHPUnit
     /** @var string */
     protected $varDir;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $this->varDir = __DIR__ . '/fixture/var';
@@ -20,7 +20,7 @@ class TestCase extends PHPUnit
         }
     }
 
-    public function tearDown()
+    public function tearDown() : void
     {
         parent::tearDown();
         if (is_dir($this->varDir)) {

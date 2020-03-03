@@ -16,7 +16,7 @@ class ReplacerTest extends TestCase
     /** @var Revver */
     private $revver;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $this->options = RevverOptions::fromArray([
@@ -25,7 +25,7 @@ class ReplacerTest extends TestCase
         $this->revver = new Revver($this->options);
     }
 
-    public function testStringReplacement()
+    public function testStringReplacement() : void
     {
         $source = '
         "empty.txt",
@@ -51,7 +51,7 @@ class ReplacerTest extends TestCase
         $this->assertSame(3, $count);
     }
 
-    public function testFileReplacement()
+    public function testFileReplacement() : void
     {
         $target = __DIR__ . '/fixture/var/target.txt';
         copy(__DIR__ . '/fixture/replacement-target.txt', $target);

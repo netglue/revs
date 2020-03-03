@@ -14,7 +14,7 @@ class RevCommandTest extends TestCase
     /** @var Application */
     private $app;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $this->app = new Application('Some app');
@@ -27,7 +27,7 @@ class RevCommandTest extends TestCase
         return $command;
     }
 
-    public function testRevCountMustBeANumber()
+    public function testRevCountMustBeANumber() : void
     {
         $command = $this->addCommand();
         $tester = new CommandTester($command);
@@ -36,11 +36,11 @@ class RevCommandTest extends TestCase
             '-c' => 'a',
         ]);
         $output = $tester->getDisplay();
-        $this->assertContains('The revision count argument must be a number', $output);
+        $this->assertStringContainsString('The revision count argument must be a number', $output);
         $this->assertEquals(-1, $tester->getStatusCode());
     }
 
-    public function testInvalidOptionsReturnError()
+    public function testInvalidOptionsReturnError() : void
     {
         $command = $this->addCommand();
         $tester = new CommandTester($command);
@@ -49,11 +49,11 @@ class RevCommandTest extends TestCase
             '-t' => 'dir-doesnt-exist',
         ]);
         $output = $tester->getDisplay();
-        $this->assertContains('[ERROR]', $output);
+        $this->assertStringContainsString('[ERROR]', $output);
         $this->assertEquals(-1, $tester->getStatusCode());
     }
 
-    public function testZeroSourceFilesIsWarning()
+    public function testZeroSourceFilesIsWarning() : void
     {
         $command = $this->addCommand();
         $tester = new CommandTester($command);
@@ -63,11 +63,11 @@ class RevCommandTest extends TestCase
             '-s' => __DIR__ . '/*.notThere',
         ]);
         $output = $tester->getDisplay();
-        $this->assertContains('[WARNING]', $output);
+        $this->assertStringContainsString('[WARNING]', $output);
         $this->assertEquals(0, $tester->getStatusCode());
     }
 
-    public function testSuccessfulRev()
+    public function testSuccessfulRev() : void
     {
         $command = $this->addCommand();
         $tester = new CommandTester($command);
@@ -81,7 +81,7 @@ class RevCommandTest extends TestCase
         ]);
         $output = $tester->getDisplay();
         $expect = sprintf('[OK]', $source);
-        $this->assertContains($expect, $output);
+        $this->assertStringContainsString($expect, $output);
         $this->assertEquals(0, $tester->getStatusCode());
     }
 }
