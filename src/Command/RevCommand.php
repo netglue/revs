@@ -23,7 +23,7 @@ class RevCommand extends Command
     /** @var SymfonyStyle */
     private $io;
 
-    protected function configure()
+    protected function configure() : void
     {
         parent::configure();
         $this->setName('netglue:rev');
@@ -66,14 +66,14 @@ class RevCommand extends Command
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output) : int
     {
         $this->io = new SymfonyStyle($input, $output);
 
         $revCount = $input->getOption('revisionCount');
         if (! is_numeric($revCount)) {
             $this->io->error('The revision count argument must be a number');
-            return(-1);
+            return -1;
         }
 
         try {
@@ -86,8 +86,10 @@ class RevCommand extends Command
                 'Invalid Option: %s',
                 $exception->getMessage()
             ));
-            return (-1);
+
+            return -1;
         }
+
         $revver = new Revver($options);
         $sources = glob($input->getOption('source'));
         if (! count($sources)) {
@@ -97,6 +99,7 @@ class RevCommand extends Command
             ));
             return 0;
         }
+
         foreach ($sources as $file) {
             $revvedFile = $revver->revFile($file);
             if ($output->isVerbose()) {
@@ -109,6 +112,8 @@ class RevCommand extends Command
             }
             $this->replaceInFiles($input, $output, $revvedFile);
         }
+
+        return 0;
     }
 
     private function replaceInFiles(InputInterface $input, OutputInterface $output, RevvedFile $info)
