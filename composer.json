@@ -47,7 +47,6 @@
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover build/clover.xml",
-        "analyse": "phpstan analyse --level=max src test",
-        "upload-coverage": "php-coveralls -v"
+        "analyse": "phpstan analyse --level=max src test"
     }
 }
