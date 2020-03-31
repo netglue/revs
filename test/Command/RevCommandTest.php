@@ -9,9 +9,6 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use function basename;
-use function sprintf;
-use function str_replace;
-use const PHP_EOL;
 
 class RevCommandTest extends TestCase
 {
