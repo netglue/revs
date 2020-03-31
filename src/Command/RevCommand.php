@@ -13,12 +13,17 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
+use function assert;
 use function count;
 use function glob;
+use function is_array;
+use function is_bool;
 use function is_numeric;
+use function is_scalar;
+use function is_string;
 use function sprintf;
 
-class RevCommand extends Command
+final class RevCommand extends Command
 {
     /** @var SymfonyStyle */
     private $io;
@@ -79,8 +84,13 @@ class RevCommand extends Command
 
         try {
             $options = new RevverOptions();
-            $options->setDestinationDirectory($input->getOption('target'));
-            $options->setCleanUp($input->getOption('delete'));
+            $target = $input->getOption('target');
+            assert(is_string($target));
+            $options->setDestinationDirectory($target);
+            $delete = $input->getOption('delete');
+            assert(is_bool($delete));
+            $options->setCleanUp($delete);
+            assert(is_scalar($revCount));
             $options->setRevisionCount((int) $revCount);
         } catch (Throwable $exception) {
             $this->io->error(sprintf(
@@ -92,11 +102,14 @@ class RevCommand extends Command
         }
 
         $revver = new Revver($options);
-        $sources = glob($input->getOption('source'));
+        $sourceGlob = $input->getOption('source');
+        assert(is_string($sourceGlob));
+        $sources = glob($sourceGlob);
+        assert(is_array($sources));
         if (! count($sources)) {
             $this->io->warning(sprintf(
                 'The --source|-s argument %s yielded no source files to process',
-                $input->getOption('source')
+                $sourceGlob
             ));
 
             return 0;
@@ -122,10 +135,15 @@ class RevCommand extends Command
     private function replaceInFiles(InputInterface $input, OutputInterface $output, RevvedFile $info) : void
     {
         $args = $input->getOption('replace');
+        assert(is_array($args));
+
         $targets = [];
         $count = 0;
         foreach ($args as $glob) {
-            foreach (glob($glob) as $file) {
+            $globbed = glob($glob);
+            assert(is_array($globbed));
+
+            foreach ($globbed as $file) {
                 $targets[] = $file;
             }
         }

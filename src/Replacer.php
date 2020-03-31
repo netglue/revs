@@ -5,16 +5,18 @@ namespace Netglue\Revs;
 
 use InvalidArgumentException;
 use RuntimeException;
+use function assert;
 use function basename;
 use function file_get_contents;
 use function file_put_contents;
 use function is_file;
+use function is_string;
 use function is_writable;
 use function preg_quote;
 use function preg_replace;
 use function sprintf;
 
-class Replacer
+final class Replacer
 {
     public static function replaceInString(string $subject, RevvedFile $info, ?int &$replacementCount = null) : string
     {
@@ -22,6 +24,7 @@ class Replacer
         $replacement = basename($info->destination());
         $pattern = $info->matchPattern();
         $value = preg_replace($pattern, $replacement, $subject, -1, $c1);
+        assert(is_string($value));
 
         $nakedFile = basename($info->source());
         $pattern = sprintf(
@@ -29,6 +32,7 @@ class Replacer
             preg_quote($nakedFile, '#')
         );
         $value = preg_replace($pattern, '$1' . $replacement . '$2', $value, -1, $c2);
+        assert(is_string($value));
 
         $replacementCount = $c1 + $c2;
 

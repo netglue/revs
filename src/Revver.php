@@ -28,7 +28,7 @@ use function unlink;
 use function usort;
 use const DIRECTORY_SEPARATOR;
 
-class Revver
+final class Revver
 {
     /** @var RevverOptions */
     private $options;

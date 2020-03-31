@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Netglue\Revs;
 
-class RevvedFile
+final class RevvedFile
 {
     /** @var string */
     private $sourceFile;

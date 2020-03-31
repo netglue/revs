@@ -16,7 +16,7 @@ use function rtrim;
 use function sprintf;
 use const DIRECTORY_SEPARATOR;
 
-class RevverOptions
+final class RevverOptions
 {
     /**
      * Whether to delete old revisions. Defaults to false

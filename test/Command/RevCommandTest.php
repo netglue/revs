@@ -8,7 +8,10 @@ use Netglue\RevsTest\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
+use function basename;
 use function sprintf;
+use function str_replace;
+use const PHP_EOL;
 
 class RevCommandTest extends TestCase
 {
@@ -82,8 +85,8 @@ class RevCommandTest extends TestCase
             'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
         ]);
         $output = $tester->getDisplay();
-        $expect = sprintf('[OK] File %s', $source);
-        $this->assertStringContainsString($expect, $output);
+        $this->assertStringContainsString('[OK] File', $output);
+        $this->assertStringContainsString(basename($source), $output);
         $this->assertEquals(0, $tester->getStatusCode());
     }
 }
