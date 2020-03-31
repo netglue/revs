@@ -14,15 +14,16 @@ class RevvedFile
     /** @var string */
     private $matchPattern;
 
-    /** @var array */
+    /** @var string[] */
     private $deletedRevisions;
 
+    /** @param string[]|null $unlinked */
     public function __construct(string $source, string $destination, string $matchPattern, ?array $unlinked = null)
     {
         $this->sourceFile = $source;
         $this->destinationFile = $destination;
         $this->matchPattern = $matchPattern;
-        $this->deletedRevisions = $unlinked ? $unlinked : [];
+        $this->deletedRevisions = $unlinked ?: [];
     }
 
     public function source() : string
@@ -35,6 +36,7 @@ class RevvedFile
         return $this->destinationFile;
     }
 
+    /** @return string[] */
     public function deletedRevisions() : array
     {
         return $this->deletedRevisions;

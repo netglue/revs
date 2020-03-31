@@ -8,6 +8,10 @@ use Netglue\Revs\RevverOptions;
 use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
+use TypeError;
+use function chmod;
+use function file_exists;
+use function mkdir;
 use function rmdir;
 
 class RevverOptionsTest extends TestCase
@@ -34,8 +38,7 @@ class RevverOptionsTest extends TestCase
     public function testExceptionThrownForIntegerKeys() : void
     {
         $options = [0 => 'bar'];
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected all option keys to be strings');
+        $this->expectException(TypeError::class);
         RevverOptions::fromArray($options);
     }
 
@@ -49,9 +52,7 @@ class RevverOptionsTest extends TestCase
 
     public function testDestinationMustBeADirectory() : void
     {
-        $options = [
-            'destinationDirectory' => __FILE__,
-        ];
+        $options = ['destinationDirectory' => __FILE__];
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The given destination directory is not a directory');
         RevverOptions::fromArray($options);
@@ -63,6 +64,7 @@ class RevverOptionsTest extends TestCase
         if (! file_exists($dir)) {
             mkdir($dir);
         }
+
         chmod($dir, 0500);
         $options = ['destinationDirectory' => $dir];
         try {

@@ -16,7 +16,6 @@ use function sprintf;
 
 class Replacer
 {
-
     public static function replaceInString(string $subject, RevvedFile $info, ?int &$replacementCount = null) : string
     {
         $c1 = $c2 = 0;
@@ -27,11 +26,12 @@ class Replacer
         $nakedFile = basename($info->source());
         $pattern = sprintf(
             '#(\b)%s(\b)#',
-            preg_quote($nakedFile)
+            preg_quote($nakedFile, '#')
         );
         $value = preg_replace($pattern, '$1' . $replacement . '$2', $value, -1, $c2);
 
         $replacementCount = $c1 + $c2;
+
         return $value;
     }
 
@@ -43,12 +43,14 @@ class Replacer
                 $sourceFile
             ));
         }
+
         if (! is_writable($sourceFile)) {
             throw new InvalidArgumentException(sprintf(
                 'The replacement target cannot be written to (%s)',
                 $sourceFile
             ));
         }
+
         $content = file_get_contents($sourceFile);
         if (! $content) {
             throw new RuntimeException(sprintf(
@@ -56,10 +58,12 @@ class Replacer
                 $sourceFile
             ));
         }
+
         file_put_contents(
             $sourceFile,
             self::replaceInString($content, $info, $count)
         );
+
         return $count;
     }
 }

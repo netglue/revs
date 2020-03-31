@@ -7,7 +7,10 @@ use InvalidArgumentException;
 use Netglue\Revs\RevvedFile;
 use Netglue\Revs\Revver;
 use Netglue\Revs\RevverOptions;
+use function basename;
+use function chmod;
 use function clearstatcache;
+use function current;
 use function file_exists;
 use function file_put_contents;
 use function touch;
@@ -21,7 +24,7 @@ class RevverTest extends TestCase
     /** @var Revver */
     private $revver;
 
-    public function setUp() : void
+    protected function setUp() : void
     {
         parent::setUp();
         $this->options = RevverOptions::fromArray([
@@ -32,19 +35,19 @@ class RevverTest extends TestCase
 
     public function testRevFile() : void
     {
-        $sourceFile = __DIR__  . '/fixture/empty.txt';
+        $sourceFile = __DIR__ . '/fixture/empty.txt';
         $info = $this->revver->revFile($sourceFile);
         $this->assertInstanceOf(RevvedFile::class, $info);
-        $this->assertTrue(file_exists($info->destination()));
+        $this->assertFileExists($info->destination());
         $this->assertStringStartsWith('empty', basename($info->destination()));
         $this->assertStringEndsWith('.txt', $info->destination());
     }
 
     public function testRevFileWithoutExtension() : void
     {
-        $sourceFile = __DIR__  . '/fixture/no-extension';
+        $sourceFile = __DIR__ . '/fixture/no-extension';
         $info = $this->revver->revFile($sourceFile);
-        $this->assertTrue(file_exists($info->destination()));
+        $this->assertFileExists($info->destination());
         $this->assertStringStartsWith('no-extension', basename($info->destination()));
     }
 
@@ -72,7 +75,7 @@ class RevverTest extends TestCase
     public function testMultipleRevsAndCleanup() : void
     {
         // Current options mean that the first 3 revs will be kept on disk:
-        $sourceFile = __DIR__  . '/fixture/empty.txt';
+        $sourceFile = __DIR__ . '/fixture/empty.txt';
         $revver = new Revver($this->options);
         $firstRev = $revver->revFile($sourceFile);
         file_put_contents($sourceFile, '2nd');
@@ -82,9 +85,9 @@ class RevverTest extends TestCase
         $revver = new Revver($this->options);
         $thirdRev = $revver->revFile($sourceFile);
 
-        $this->assertTrue(file_exists($firstRev->destination()));
-        $this->assertTrue(file_exists($secondRev->destination()));
-        $this->assertTrue(file_exists($thirdRev->destination()));
+        $this->assertFileExists($firstRev->destination());
+        $this->assertFileExists($secondRev->destination());
+        $this->assertFileExists($thirdRev->destination());
 
         // Change options so that automatic cleanup occurs for the 4th rev
         $options = RevverOptions::fromArray([
@@ -97,10 +100,10 @@ class RevverTest extends TestCase
         $revver = new Revver($options);
         $fourthRev = $revver->revFile($sourceFile);
 
-        $this->assertFalse(file_exists($firstRev->destination()));
-        $this->assertFalse(file_exists($secondRev->destination()));
-        $this->assertTrue(file_exists($thirdRev->destination()));
-        $this->assertTrue(file_exists($fourthRev->destination()));
+        $this->assertFileNotExists($firstRev->destination());
+        $this->assertFileNotExists($secondRev->destination());
+        $this->assertFileExists($thirdRev->destination());
+        $this->assertFileExists($fourthRev->destination());
 
         $deleted = $fourthRev->deletedRevisions();
         $this->assertCount(2, $deleted);
@@ -115,7 +118,7 @@ class RevverTest extends TestCase
             'cleanUp' => true,
             'revisionCount' => 0,
         ]);
-        $sourceFile = __DIR__  . '/fixture/empty.txt';
+        $sourceFile = __DIR__ . '/fixture/empty.txt';
         $revver = new Revver($options);
         $info = $revver->revFile($sourceFile);
         $this->assertTrue(file_exists($info->destination()));
@@ -129,7 +132,7 @@ class RevverTest extends TestCase
             'cleanUp' => true,
             'revisionCount' => 1,
         ]);
-        $sourceFile = __DIR__  . '/fixture/empty.txt';
+        $sourceFile = __DIR__ . '/fixture/empty.txt';
         $revver = new Revver($options);
         $firstRev = $revver->revFile($sourceFile);
         $this->assertTrue(file_exists($firstRev->destination()));
@@ -158,7 +161,7 @@ class RevverTest extends TestCase
 
     public function testThatFilenameIsUnchangedWhenSourceFileContentHashIsTheSame() : void
     {
-        $sourceFile = __DIR__  . '/fixture/empty.txt';
+        $sourceFile = __DIR__ . '/fixture/empty.txt';
         $firstRev = $this->revver->revFile($sourceFile);
         $this->assertTrue(file_exists($firstRev->destination()));
         $this->revver->revFile($sourceFile);
@@ -167,8 +170,8 @@ class RevverTest extends TestCase
 
     public function testThatRemovingOldRevsOnlyAppliesToCorrectlyNamedFile() : void
     {
-        $firstSource  = __DIR__  . '/fixture/no-extension';
-        $secondSource = __DIR__  . '/fixture/empty.txt';
+        $firstSource  = __DIR__ . '/fixture/no-extension';
+        $secondSource = __DIR__ . '/fixture/empty.txt';
         $this->options->setCleanUp(true);
         $this->options->setRevisionCount(0);
         $firstRev = $this->revver->revFile($firstSource);

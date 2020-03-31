@@ -73,11 +73,12 @@ class RevCommand extends Command
         $revCount = $input->getOption('revisionCount');
         if (! is_numeric($revCount)) {
             $this->io->error('The revision count argument must be a number');
+
             return -1;
         }
 
         try {
-            $options = new RevverOptions;
+            $options = new RevverOptions();
             $options->setDestinationDirectory($input->getOption('target'));
             $options->setCleanUp($input->getOption('delete'));
             $options->setRevisionCount((int) $revCount);
@@ -97,6 +98,7 @@ class RevCommand extends Command
                 'The --source|-s argument %s yielded no source files to process',
                 $input->getOption('source')
             ));
+
             return 0;
         }
 
@@ -110,13 +112,14 @@ class RevCommand extends Command
                     count($revvedFile->deletedRevisions())
                 ));
             }
+
             $this->replaceInFiles($input, $output, $revvedFile);
         }
 
         return 0;
     }
 
-    private function replaceInFiles(InputInterface $input, OutputInterface $output, RevvedFile $info)
+    private function replaceInFiles(InputInterface $input, OutputInterface $output, RevvedFile $info) : void
     {
         $args = $input->getOption('replace');
         $targets = [];
@@ -126,19 +129,24 @@ class RevCommand extends Command
                 $targets[] = $file;
             }
         }
+
         if (! count($targets)) {
             return;
         }
+
         foreach ($targets as $target) {
             $count += Replacer::replaceInFile($target, $info);
         }
-        if ($output->isVerbose()) {
-            $this->io->success(sprintf(
-                'Replaced %d references to %s within %d target files',
-                $count,
-                $info->source(),
-                count($targets)
-            ));
+
+        if (! $output->isVerbose()) {
+            return;
         }
+
+        $this->io->success(sprintf(
+            'Replaced %d references to %s within %d target files',
+            $count,
+            $info->source(),
+            count($targets)
+        ));
     }
 }

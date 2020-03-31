@@ -6,6 +6,8 @@ namespace Netglue\RevsTest;
 use Netglue\Revs\Replacer;
 use Netglue\Revs\Revver;
 use Netglue\Revs\RevverOptions;
+use function basename;
+use function copy;
 use function sprintf;
 
 class ReplacerTest extends TestCase
@@ -16,7 +18,7 @@ class ReplacerTest extends TestCase
     /** @var Revver */
     private $revver;
 
-    public function setUp() : void
+    protected function setUp() : void
     {
         parent::setUp();
         $this->options = RevverOptions::fromArray([
