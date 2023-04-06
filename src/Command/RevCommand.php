@@ -13,6 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Throwable;
+
 use function assert;
 use function count;
 use function glob;
@@ -28,7 +29,7 @@ final class RevCommand extends Command
     /** @var SymfonyStyle */
     private $io;
 
-    protected function configure() : void
+    protected function configure(): void
     {
         parent::configure();
         $this->setName('netglue:rev');
@@ -71,7 +72,7 @@ final class RevCommand extends Command
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output) : int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
 
@@ -132,7 +133,7 @@ final class RevCommand extends Command
         return 0;
     }
 
-    private function replaceInFiles(InputInterface $input, OutputInterface $output, RevvedFile $info) : void
+    private function replaceInFiles(InputInterface $input, OutputInterface $output, RevvedFile $info): void
     {
         $args = $input->getOption('replace');
         assert(is_array($args));

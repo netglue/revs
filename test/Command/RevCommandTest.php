@@ -8,6 +8,7 @@ use Netglue\RevsTest\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
+
 use function basename;
 
 class RevCommandTest extends TestCase
@@ -15,13 +16,13 @@ class RevCommandTest extends TestCase
     /** @var Application */
     private $app;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->app = new Application('Some app');
     }
 
-    public function addCommand() : RevCommand
+    public function addCommand(): RevCommand
     {
         $command = new RevCommand();
         $this->app->add($command);
@@ -29,7 +30,7 @@ class RevCommandTest extends TestCase
         return $command;
     }
 
-    public function testRevCountMustBeANumber() : void
+    public function testRevCountMustBeANumber(): void
     {
         $command = $this->addCommand();
         $tester = new CommandTester($command);
@@ -42,7 +43,7 @@ class RevCommandTest extends TestCase
         $this->assertEquals(-1, $tester->getStatusCode());
     }
 
-    public function testInvalidOptionsReturnError() : void
+    public function testInvalidOptionsReturnError(): void
     {
         $command = $this->addCommand();
         $tester = new CommandTester($command);
@@ -55,7 +56,7 @@ class RevCommandTest extends TestCase
         $this->assertEquals(-1, $tester->getStatusCode());
     }
 
-    public function testZeroSourceFilesIsWarning() : void
+    public function testZeroSourceFilesIsWarning(): void
     {
         $command = $this->addCommand();
         $tester = new CommandTester($command);
@@ -69,7 +70,7 @@ class RevCommandTest extends TestCase
         $this->assertEquals(0, $tester->getStatusCode());
     }
 
-    public function testSuccessfulRev() : void
+    public function testSuccessfulRev(): void
     {
         $command = $this->addCommand();
         $tester = new CommandTester($command);

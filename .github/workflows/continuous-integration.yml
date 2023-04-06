@@ -1,0 +1,34 @@
+name: "Continuous Integration"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - '[0-9]+.[0-9]+.x'
+      - 'renovate/**'
+    tags:
+
+env:
+  default_php: '7.3'
+  php_extensions:
+
+jobs:
+  ci:
+    uses: laminas/workflow-continuous-integration/.github/workflows/continuous-integration.yml@1.x
+
+  #
+  # Use custom require-checker run - Laminas CI requires it's installed as a dev dependency for now.
+  #
+  composer-require-checker:
+    name: "Check for missing dependencies"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@2.24.0
+        with:
+          php-version: 8.1
+          ini-values: memory_limit=-1
+      - uses: ramsey/composer-install@2.2.0
+      - run: composer global config bin-dir /usr/local/bin
+      - run: composer global require -W maglnet/composer-require-checker
+      - run: /usr/local/bin/composer-require-checker --config-file=.github/composer-require-checker.json check

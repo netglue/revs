@@ -26,23 +26,23 @@ final class RevvedFile
         $this->deletedRevisions = $unlinked ?: [];
     }
 
-    public function source() : string
+    public function source(): string
     {
         return $this->sourceFile;
     }
 
-    public function destination() : string
+    public function destination(): string
     {
         return $this->destinationFile;
     }
 
     /** @return string[] */
-    public function deletedRevisions() : array
+    public function deletedRevisions(): array
     {
         return $this->deletedRevisions;
     }
 
-    public function matchPattern() : string
+    public function matchPattern(): string
     {
         return $this->matchPattern;
     }

@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use Netglue\Revs\RevvedFile;
 use Netglue\Revs\Revver;
 use Netglue\Revs\RevverOptions;
+
 use function basename;
 use function chmod;
 use function clearstatcache;
@@ -24,7 +25,7 @@ class RevverTest extends TestCase
     /** @var Revver */
     private $revver;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->options = RevverOptions::fromArray([
@@ -33,7 +34,7 @@ class RevverTest extends TestCase
         $this->revver = new Revver($this->options);
     }
 
-    public function testRevFile() : void
+    public function testRevFile(): void
     {
         $sourceFile = __DIR__ . '/fixture/empty.txt';
         $info = $this->revver->revFile($sourceFile);
@@ -43,7 +44,7 @@ class RevverTest extends TestCase
         $this->assertStringEndsWith('.txt', $info->destination());
     }
 
-    public function testRevFileWithoutExtension() : void
+    public function testRevFileWithoutExtension(): void
     {
         $sourceFile = __DIR__ . '/fixture/no-extension';
         $info = $this->revver->revFile($sourceFile);
@@ -51,14 +52,14 @@ class RevverTest extends TestCase
         $this->assertStringStartsWith('no-extension', basename($info->destination()));
     }
 
-    public function testExceptionThrownForNonFile() : void
+    public function testExceptionThrownForNonFile(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The given argument is not a file');
         $this->revver->revFile(__DIR__);
     }
 
-    public function testExceptionThrownForUnreadableFile() : void
+    public function testExceptionThrownForUnreadableFile(): void
     {
         $file = $this->varDir . '/no-read.txt';
         try {
@@ -72,7 +73,7 @@ class RevverTest extends TestCase
         }
     }
 
-    public function testMultipleRevsAndCleanup() : void
+    public function testMultipleRevsAndCleanup(): void
     {
         // Current options mean that the first 3 revs will be kept on disk:
         $sourceFile = __DIR__ . '/fixture/empty.txt';
@@ -100,8 +101,8 @@ class RevverTest extends TestCase
         $revver = new Revver($options);
         $fourthRev = $revver->revFile($sourceFile);
 
-        $this->assertFileNotExists($firstRev->destination());
-        $this->assertFileNotExists($secondRev->destination());
+        $this->assertFileDoesNotExist($firstRev->destination());
+        $this->assertFileDoesNotExist($secondRev->destination());
         $this->assertFileExists($thirdRev->destination());
         $this->assertFileExists($fourthRev->destination());
 
@@ -111,7 +112,7 @@ class RevverTest extends TestCase
         $this->assertContains($secondRev->destination(), $deleted);
     }
 
-    public function testThatNewRevWillNotBeDeletedWhenRevisionCountIsZero() : void
+    public function testThatNewRevWillNotBeDeletedWhenRevisionCountIsZero(): void
     {
         $options = RevverOptions::fromArray([
             'destinationDirectory' => $this->varDir,
@@ -125,7 +126,7 @@ class RevverTest extends TestCase
         $this->assertCount(0, $info->deletedRevisions());
     }
 
-    public function testThatLastRevWillNotBeDeletedWhenRevisionCountIs1() : void
+    public function testThatLastRevWillNotBeDeletedWhenRevisionCountIs1(): void
     {
         $options = RevverOptions::fromArray([
             'destinationDirectory' => $this->varDir,
@@ -159,7 +160,7 @@ class RevverTest extends TestCase
         $this->assertSame($firstRev->destination(), current($deleted));
     }
 
-    public function testThatFilenameIsUnchangedWhenSourceFileContentHashIsTheSame() : void
+    public function testThatFilenameIsUnchangedWhenSourceFileContentHashIsTheSame(): void
     {
         $sourceFile = __DIR__ . '/fixture/empty.txt';
         $firstRev = $this->revver->revFile($sourceFile);
@@ -168,7 +169,7 @@ class RevverTest extends TestCase
         $this->assertTrue(file_exists($firstRev->destination()));
     }
 
-    public function testThatRemovingOldRevsOnlyAppliesToCorrectlyNamedFile() : void
+    public function testThatRemovingOldRevsOnlyAppliesToCorrectlyNamedFile(): void
     {
         $firstSource  = __DIR__ . '/fixture/no-extension';
         $secondSource = __DIR__ . '/fixture/empty.txt';
