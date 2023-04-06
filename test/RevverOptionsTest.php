@@ -41,6 +41,7 @@ class RevverOptionsTest extends TestCase
     {
         $options = [0 => 'bar'];
         $this->expectException(TypeError::class);
+        /** @psalm-suppress InvalidArgument */
         RevverOptions::fromArray($options);
     }
 
