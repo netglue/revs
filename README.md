@@ -1,7 +1,6 @@
 # Filename Hashing Revisions & Automatic Cleanup
 
-![PHPUnit Test Suite](https://github.com/netglue/revs/workflows/PHPUnit%20Test%20Suite/badge.svg)
-[![codecov](https://codecov.io/gh/netglue/revs/branch/master/graph/badge.svg)](https://codecov.io/gh/netglue/revs)
+[![Continuous Integration](https://github.com/netglue/revs/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/netglue/revs/actions/workflows/continuous-integration.yml)
 
 Probably re-inventing the wheel here, but I wanted to be able to rev front-end resource file names in a predictable way with options to automatically delete old revisions keeping either none of them or a specific number of the most recent ones. There are javascript tools that do this but at the time of writing, I couldn't find anything I liked in JS land that you could just fire off from an npm package script easily. There's plenty for Grunt and Gulp if you're using those.
 
@@ -126,4 +125,3 @@ so there might be a long wait for an answer.
 
 [Netglue makes websites and apps in Devon, England](https://netglue.uk).
 We hope this is useful to you and we’d appreciate feedback either way :)
-
