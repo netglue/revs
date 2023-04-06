@@ -6,6 +6,7 @@ namespace Netglue\Revs;
 use InvalidArgumentException;
 use OutOfRangeException;
 use RuntimeException;
+
 use function array_map;
 use function explode;
 use function implode;
@@ -14,6 +15,7 @@ use function is_writable;
 use function method_exists;
 use function rtrim;
 use function sprintf;
+
 use const DIRECTORY_SEPARATOR;
 
 final class RevverOptions
@@ -39,17 +41,17 @@ final class RevverOptions
      */
     private $destinationDirectory;
 
-    public function setCleanUp(bool $cleanUp) : void
+    public function setCleanUp(bool $cleanUp): void
     {
         $this->cleanUp = $cleanUp;
     }
 
-    public function cleanUp() : bool
+    public function cleanUp(): bool
     {
         return $this->cleanUp;
     }
 
-    public function setRevisionCount(int $count) : void
+    public function setRevisionCount(int $count): void
     {
         if ($count < 0) {
             throw new OutOfRangeException(sprintf(
@@ -61,12 +63,12 @@ final class RevverOptions
         $this->revisionCount = $count;
     }
 
-    public function revisionCount() : int
+    public function revisionCount(): int
     {
         return $this->revisionCount;
     }
 
-    public function setDestinationDirectory(string $directory) : void
+    public function setDestinationDirectory(string $directory): void
     {
         $directory = rtrim($directory, DIRECTORY_SEPARATOR);
         if (! is_dir($directory)) {
@@ -86,7 +88,7 @@ final class RevverOptions
         $this->destinationDirectory = $directory;
     }
 
-    public function destinationDirectory() : string
+    public function destinationDirectory(): string
     {
         if (! $this->destinationDirectory) {
             throw new RuntimeException('The destination directory has not been set');
@@ -96,7 +98,7 @@ final class RevverOptions
     }
 
     /** @param mixed[] $values */
-    public static function fromArray(array $values) : self
+    public static function fromArray(array $values): self
     {
         $instance = new static();
         foreach ($values as $key => $value) {
@@ -107,7 +109,7 @@ final class RevverOptions
     }
 
     /** @param mixed $value */
-    private function setProperty(string $key, $value) : void
+    private function setProperty(string $key, $value): void
     {
         $setter = 'set' . implode('', array_map('ucfirst', explode('_', $key)));
         if (! method_exists($this, $setter)) {

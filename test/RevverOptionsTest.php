@@ -9,6 +9,7 @@ use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use TypeError;
+
 use function chmod;
 use function file_exists;
 use function mkdir;
@@ -16,7 +17,7 @@ use function rmdir;
 
 class RevverOptionsTest extends TestCase
 {
-    public function testFromArray() : void
+    public function testFromArray(): void
     {
         $options = [
             'clean_up' => true,
@@ -27,7 +28,7 @@ class RevverOptionsTest extends TestCase
         $this->assertSame(10, $object->revisionCount());
     }
 
-    public function testExceptionThrownForUnknownOptions() : void
+    public function testExceptionThrownForUnknownOptions(): void
     {
         $options = ['foo' => 'bar'];
         $this->expectException(InvalidArgumentException::class);
@@ -35,14 +36,14 @@ class RevverOptionsTest extends TestCase
         RevverOptions::fromArray($options);
     }
 
-    public function testExceptionThrownForIntegerKeys() : void
+    public function testExceptionThrownForIntegerKeys(): void
     {
         $options = [0 => 'bar'];
         $this->expectException(TypeError::class);
         RevverOptions::fromArray($options);
     }
 
-    public function testRevisionCountMustBeAnIntegerBiggerThanZero() : void
+    public function testRevisionCountMustBeAnIntegerBiggerThanZero(): void
     {
         $options = ['revisionCount' => -1];
         $this->expectException(OutOfRangeException::class);
@@ -50,7 +51,7 @@ class RevverOptionsTest extends TestCase
         RevverOptions::fromArray($options);
     }
 
-    public function testDestinationMustBeADirectory() : void
+    public function testDestinationMustBeADirectory(): void
     {
         $options = ['destinationDirectory' => __FILE__];
         $this->expectException(InvalidArgumentException::class);
@@ -58,7 +59,7 @@ class RevverOptionsTest extends TestCase
         RevverOptions::fromArray($options);
     }
 
-    public function testNonWritableDirectoryIsExceptional() : void
+    public function testNonWritableDirectoryIsExceptional(): void
     {
         $dir = __DIR__ . '/var';
         if (! file_exists($dir)) {
@@ -76,7 +77,7 @@ class RevverOptionsTest extends TestCase
         }
     }
 
-    public function testDestinationRetrievalIsExceptionalWhenUnset() : void
+    public function testDestinationRetrievalIsExceptionalWhenUnset(): void
     {
         $options = new RevverOptions();
         $this->expectException(RuntimeException::class);

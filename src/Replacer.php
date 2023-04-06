@@ -5,6 +5,7 @@ namespace Netglue\Revs;
 
 use InvalidArgumentException;
 use RuntimeException;
+
 use function assert;
 use function basename;
 use function file_get_contents;
@@ -18,7 +19,7 @@ use function sprintf;
 
 final class Replacer
 {
-    public static function replaceInString(string $subject, RevvedFile $info, ?int &$replacementCount = null) : string
+    public static function replaceInString(string $subject, RevvedFile $info, ?int &$replacementCount = null): string
     {
         $c1 = $c2 = 0;
         $replacement = basename($info->destination());
@@ -39,7 +40,7 @@ final class Replacer
         return $value;
     }
 
-    public static function replaceInFile(string $sourceFile, RevvedFile $info) : int
+    public static function replaceInFile(string $sourceFile, RevvedFile $info): int
     {
         if (! is_file($sourceFile)) {
             throw new InvalidArgumentException(sprintf(

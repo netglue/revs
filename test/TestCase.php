@@ -5,6 +5,7 @@ namespace Netglue\RevsTest;
 
 use PHPUnit\Framework\TestCase as PHPUnit;
 use RuntimeException;
+
 use function fclose;
 use function file_exists;
 use function fopen;
@@ -21,7 +22,7 @@ class TestCase extends PHPUnit
     /** @var string */
     protected $varDir;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->varDir = __DIR__ . '/fixture/var';
@@ -32,7 +33,7 @@ class TestCase extends PHPUnit
         mkdir($this->varDir);
     }
 
-    protected function tearDown() : void
+    protected function tearDown(): void
     {
         parent::tearDown();
         if (is_dir($this->varDir)) {

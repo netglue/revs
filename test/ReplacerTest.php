@@ -6,6 +6,7 @@ namespace Netglue\RevsTest;
 use Netglue\Revs\Replacer;
 use Netglue\Revs\Revver;
 use Netglue\Revs\RevverOptions;
+
 use function basename;
 use function copy;
 use function sprintf;
@@ -18,7 +19,7 @@ class ReplacerTest extends TestCase
     /** @var Revver */
     private $revver;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->options = RevverOptions::fromArray([
@@ -27,7 +28,7 @@ class ReplacerTest extends TestCase
         $this->revver = new Revver($this->options);
     }
 
-    public function testStringReplacement() : void
+    public function testStringReplacement(): void
     {
         $source = '
         "empty.txt",
@@ -53,7 +54,7 @@ class ReplacerTest extends TestCase
         $this->assertSame(3, $count);
     }
 
-    public function testFileReplacement() : void
+    public function testFileReplacement(): void
     {
         $target = __DIR__ . '/fixture/var/target.txt';
         copy(__DIR__ . '/fixture/replacement-target.txt', $target);

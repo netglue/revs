@@ -9,6 +9,7 @@ use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 use RuntimeException;
+
 use function array_map;
 use function array_slice;
 use function assert;
@@ -26,6 +27,7 @@ use function preg_quote;
 use function sprintf;
 use function unlink;
 use function usort;
+
 use const DIRECTORY_SEPARATOR;
 
 final class Revver
@@ -41,7 +43,7 @@ final class Revver
         $this->options = $options;
     }
 
-    public function revFile(string $file) : RevvedFile
+    public function revFile(string $file): RevvedFile
     {
         $this->assertReadableFile($file);
         $hash = md5_file($file);
@@ -85,7 +87,7 @@ final class Revver
         return new RevvedFile($file, $filePath, $matcher, $unlinked);
     }
 
-    private function uuidFactory() : UuidFactory
+    private function uuidFactory(): UuidFactory
     {
         if (! $this->uuidFactory) {
             $this->uuidFactory = new UuidFactory();
@@ -99,7 +101,7 @@ final class Revver
         return $this->uuidFactory;
     }
 
-    private function filenameMatchPattern(string $sourceFileBasename) : string
+    private function filenameMatchPattern(string $sourceFileBasename): string
     {
         $info = pathinfo($sourceFileBasename);
         $basename = $info['filename'];
@@ -116,7 +118,7 @@ final class Revver
         );
     }
 
-    private function getPathOfExistingMatchingHash(string $sourceFilePath, string $hash) :? string
+    private function getPathOfExistingMatchingHash(string $sourceFilePath, string $hash):? string
     {
         $basename = basename($sourceFilePath);
         $pattern  = $this->filenameMatchPattern($basename);
@@ -143,7 +145,7 @@ final class Revver
     }
 
     /** @return string[] */
-    private function cleanUpFile(RevvedFile $info) : array
+    private function cleanUpFile(RevvedFile $info): array
     {
         $unlinked = [];
         $unlink = $this->buildUnlinkList($info);
@@ -170,7 +172,7 @@ final class Revver
     }
 
     /** @return string[] */
-    private function buildUnlinkList(RevvedFile $info) : array
+    private function buildUnlinkList(RevvedFile $info): array
     {
         $pattern = $this->filenameMatchPattern(basename($info->source()));
         $unlinkList = [];
@@ -215,7 +217,7 @@ final class Revver
         }, $remaining);
     }
 
-    private function assertReadableFile(string $file) : void
+    private function assertReadableFile(string $file): void
     {
         if (! is_file($file)) {
             throw new InvalidArgumentException(sprintf(
