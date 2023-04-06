@@ -92,10 +92,11 @@ final class RevverOptions
         return $this->destinationDirectory;
     }
 
-    /** @param mixed[] $values */
+    /** @param array<string, mixed> $values */
     public static function fromArray(array $values): self
     {
         $instance = new self();
+        /** @psalm-suppress MixedAssignment */
         foreach ($values as $key => $value) {
             $instance->setProperty($key, $value);
         }
