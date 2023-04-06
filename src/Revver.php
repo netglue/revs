@@ -140,7 +140,7 @@ final class Revver
         return null;
     }
 
-    /** @return string[] */
+    /** @return list<string> */
     private function cleanUpFile(RevvedFile $info): array
     {
         $unlinked = [];
@@ -171,6 +171,12 @@ final class Revver
     private function buildUnlinkList(RevvedFile $info): array
     {
         $pattern = $this->filenameMatchPattern(basename($info->source()));
+        /**
+         * @psalm-var list<array{
+         *     uuid: UuidInterface,
+         *     path: string,
+         * }> $unlinkList
+         */
         $unlinkList = [];
         foreach (new DirectoryIterator(dirname($info->destination())) as $fileInfo) {
             if (! $fileInfo->isFile()) {
@@ -193,7 +199,7 @@ final class Revver
             ];
         }
 
-        usort($unlinkList, static function ($a, $b) {
+        usort($unlinkList, static function (array $a, array $b): int {
             $aUuid = $a['uuid'];
             assert($aUuid instanceof UuidInterface);
             $bUuid = $b['uuid'];

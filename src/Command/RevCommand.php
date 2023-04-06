@@ -21,13 +21,12 @@ use function glob;
 use function is_array;
 use function is_bool;
 use function is_numeric;
-use function is_scalar;
 use function is_string;
 use function sprintf;
 
 final class RevCommand extends Command
 {
-    private SymfonyStyle|null $io;
+    private SymfonyStyle|null $io = null;
 
     protected function configure(): void
     {
@@ -92,7 +91,6 @@ final class RevCommand extends Command
             $delete = $input->getOption('delete');
             assert(is_bool($delete));
             $options->setCleanUp($delete);
-            assert(is_scalar($revCount));
             $options->setRevisionCount((int) $revCount);
         } catch (Throwable $exception) {
             $this->io->error(sprintf(
@@ -142,6 +140,7 @@ final class RevCommand extends Command
         $targets = [];
         $count = 0;
         foreach ($args as $glob) {
+            assert(is_string($glob));
             $globbed = glob($glob);
             assert(is_array($globbed));
 
@@ -162,6 +161,7 @@ final class RevCommand extends Command
             return;
         }
 
+        assert($this->io !== null);
         $this->io->success(sprintf(
             'Replaced %d references to %s within %d target files',
             $count,

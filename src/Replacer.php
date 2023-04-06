@@ -12,6 +12,7 @@ use function basename;
 use function file_get_contents;
 use function file_put_contents;
 use function is_file;
+use function is_int;
 use function is_string;
 use function is_writable;
 use function preg_quote;
@@ -20,6 +21,7 @@ use function sprintf;
 
 final class Replacer
 {
+    /** @psalm-param-out int $replacementCount */
     public static function replaceInString(string $subject, RevvedFile $info, int|null &$replacementCount = null): string
     {
         $c1 = $c2 = 0;
@@ -35,6 +37,8 @@ final class Replacer
         );
         $value = preg_replace($pattern, '$1' . $replacement . '$2', $value, -1, $c2);
         assert(is_string($value));
+        assert(is_int($c1));
+        assert(is_int($c2));
 
         $replacementCount = $c1 + $c2;
 
