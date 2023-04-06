@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Netglue\Revs;
@@ -22,24 +23,18 @@ final class RevverOptions
 {
     /**
      * Whether to delete old revisions. Defaults to false
-     *
-     * @var bool
      */
-    private $cleanUp = false;
+    private bool $cleanUp = false;
 
     /**
      * The number of old revisions to keep if cleanup is true
-     *
-     * @var int
      */
-    private $revisionCount = 1;
+    private int $revisionCount = 1;
 
     /**
      * Where the revved files will be stored
-     *
-     * @var string|null
      */
-    private $destinationDirectory;
+    private string|null $destinationDirectory = null;
 
     public function setCleanUp(bool $cleanUp): void
     {
@@ -56,7 +51,7 @@ final class RevverOptions
         if ($count < 0) {
             throw new OutOfRangeException(sprintf(
                 'The revision count must an integer greater than or equal to 0. Received %d',
-                $count
+                $count,
             ));
         }
 
@@ -74,14 +69,14 @@ final class RevverOptions
         if (! is_dir($directory)) {
             throw new InvalidArgumentException(sprintf(
                 'The given destination directory is not a directory. Make sure it exists and is writable: %s',
-                $directory
+                $directory,
             ));
         }
 
         if (! is_writable($directory)) {
             throw new InvalidArgumentException(sprintf(
                 'The destination directory provided cannot be written to: %s',
-                $directory
+                $directory,
             ));
         }
 
@@ -100,7 +95,7 @@ final class RevverOptions
     /** @param mixed[] $values */
     public static function fromArray(array $values): self
     {
-        $instance = new static();
+        $instance = new self();
         foreach ($values as $key => $value) {
             $instance->setProperty($key, $value);
         }
@@ -108,15 +103,14 @@ final class RevverOptions
         return $instance;
     }
 
-    /** @param mixed $value */
-    private function setProperty(string $key, $value): void
+    private function setProperty(string $key, mixed $value): void
     {
         $setter = 'set' . implode('', array_map('ucfirst', explode('_', $key)));
         if (! method_exists($this, $setter)) {
             throw new InvalidArgumentException(sprintf(
                 'The key %s which resolves to the setter %s is not valid. There’s no method by that name',
                 $key,
-                $setter
+                $setter,
             ));
         }
 

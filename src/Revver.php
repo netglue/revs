@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Netglue\Revs;
@@ -32,15 +33,10 @@ use const DIRECTORY_SEPARATOR;
 
 final class Revver
 {
-    /** @var RevverOptions */
-    private $options;
+    private UuidFactory|null $uuidFactory = null;
 
-    /** @var UuidFactory|null */
-    private $uuidFactory;
-
-    public function __construct(RevverOptions $options)
+    public function __construct(private readonly RevverOptions $options)
     {
-        $this->options = $options;
     }
 
     public function revFile(string $file): RevvedFile
@@ -50,7 +46,7 @@ final class Revver
         if (! $hash) {
             throw new RuntimeException(sprintf(
                 'Failed to compute a hash of the file at %s',
-                $file
+                $file,
             ));
         }
 
@@ -68,13 +64,13 @@ final class Revver
             $basename,
             $hash,
             $this->uuidFactory()->uuid1()->toString(),
-            $extension
+            $extension,
         );
         $filePath = sprintf(
             '%s%s%s',
             $this->options->destinationDirectory(),
             DIRECTORY_SEPARATOR,
-            $fileName
+            $fileName,
         );
         copy($file, $filePath);
         $info = new RevvedFile($file, $filePath, $matcher);
@@ -93,8 +89,8 @@ final class Revver
             $this->uuidFactory = new UuidFactory();
             $this->uuidFactory->setCodec(
                 new OrderedTimeCodec(
-                    $this->uuidFactory->getUuidBuilder()
-                )
+                    $this->uuidFactory->getUuidBuilder(),
+                ),
             );
         }
 
@@ -114,11 +110,11 @@ final class Revver
             preg_quote($basename, '#'),
             $hashPattern,
             $uuidPattern,
-            preg_quote($extension, '#')
+            preg_quote($extension, '#'),
         );
     }
 
-    private function getPathOfExistingMatchingHash(string $sourceFilePath, string $hash):? string
+    private function getPathOfExistingMatchingHash(string $sourceFilePath, string $hash): string|null
     {
         $basename = basename($sourceFilePath);
         $pattern  = $this->filenameMatchPattern($basename);
@@ -136,7 +132,7 @@ final class Revver
                     '%s%s%s',
                     $fileInfo->getPath(),
                     DIRECTORY_SEPARATOR,
-                    $fileInfo->getFilename()
+                    $fileInfo->getFilename(),
                 );
             }
         }
@@ -154,14 +150,14 @@ final class Revver
                 throw new RuntimeException(sprintf(
                     'Expected the file at %s in the destination directory to exist for un-linking '
                     . 'but it wasn’t found.',
-                    basename($filePath)
+                    basename($filePath),
                 ));
             }
 
             if (! unlink($filePath)) {
                 throw new RuntimeException(sprintf(
                     'Failed to unlink the file at the following path: %s',
-                    $filePath
+                    $filePath,
                 ));
             }
 
@@ -222,14 +218,14 @@ final class Revver
         if (! is_file($file)) {
             throw new InvalidArgumentException(sprintf(
                 'The given argument is not a file: %s',
-                $file
+                $file,
             ));
         }
 
         if (! is_readable($file)) {
             throw new InvalidArgumentException(sprintf(
                 'The given file cannot be read: %s',
-                $file
+                $file,
             ));
         }
     }

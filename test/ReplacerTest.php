@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Netglue\RevsTest;
@@ -13,15 +14,14 @@ use function sprintf;
 
 class ReplacerTest extends TestCase
 {
-    /** @var RevverOptions */
-    private $options;
+    private RevverOptions $options;
 
-    /** @var Revver */
-    private $revver;
+    private Revver $revver;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->options = RevverOptions::fromArray([
             'destinationDirectory' => $this->varDir,
         ]);
