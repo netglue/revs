@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Netglue\RevsTest\Command;
@@ -13,12 +14,12 @@ use function basename;
 
 class RevCommandTest extends TestCase
 {
-    /** @var Application */
-    private $app;
+    private Application $app;
 
     public function setUp(): void
     {
         parent::setUp();
+
         $this->app = new Application('Some app');
     }
 

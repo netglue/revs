@@ -1,29 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Netglue\Revs;
 
 final class RevvedFile
 {
-    /** @var string */
-    private $sourceFile;
-
-    /** @var string */
-    private $destinationFile;
-
-    /** @var string */
-    private $matchPattern;
-
-    /** @var string[] */
-    private $deletedRevisions;
-
-    /** @param string[]|null $unlinked */
-    public function __construct(string $source, string $destination, string $matchPattern, ?array $unlinked = null)
-    {
-        $this->sourceFile = $source;
-        $this->destinationFile = $destination;
-        $this->matchPattern = $matchPattern;
-        $this->deletedRevisions = $unlinked ?: [];
+    /** @param list<string> $deletedRevisions */
+    public function __construct(
+        private string $sourceFile,
+        private string $destinationFile,
+        private string $matchPattern,
+        private array $deletedRevisions = [],
+    ) {
     }
 
     public function source(): string
@@ -36,7 +25,7 @@ final class RevvedFile
         return $this->destinationFile;
     }
 
-    /** @return string[] */
+    /** @return list<string> */
     public function deletedRevisions(): array
     {
         return $this->deletedRevisions;

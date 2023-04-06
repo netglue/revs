@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Netglue\Revs;
@@ -19,7 +20,7 @@ use function sprintf;
 
 final class Replacer
 {
-    public static function replaceInString(string $subject, RevvedFile $info, ?int &$replacementCount = null): string
+    public static function replaceInString(string $subject, RevvedFile $info, int|null &$replacementCount = null): string
     {
         $c1 = $c2 = 0;
         $replacement = basename($info->destination());
@@ -30,7 +31,7 @@ final class Replacer
         $nakedFile = basename($info->source());
         $pattern = sprintf(
             '#(\b)%s(\b)#',
-            preg_quote($nakedFile, '#')
+            preg_quote($nakedFile, '#'),
         );
         $value = preg_replace($pattern, '$1' . $replacement . '$2', $value, -1, $c2);
         assert(is_string($value));
@@ -45,14 +46,14 @@ final class Replacer
         if (! is_file($sourceFile)) {
             throw new InvalidArgumentException(sprintf(
                 'The given replacement target at %s is not a file',
-                $sourceFile
+                $sourceFile,
             ));
         }
 
         if (! is_writable($sourceFile)) {
             throw new InvalidArgumentException(sprintf(
                 'The replacement target cannot be written to (%s)',
-                $sourceFile
+                $sourceFile,
             ));
         }
 
@@ -60,13 +61,13 @@ final class Replacer
         if (! $content) {
             throw new RuntimeException(sprintf(
                 'Cannot read the contents of the file %s',
-                $sourceFile
+                $sourceFile,
             ));
         }
 
         file_put_contents(
             $sourceFile,
-            self::replaceInString($content, $info, $count)
+            self::replaceInString($content, $info, $count),
         );
 
         return $count;

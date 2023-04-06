@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Netglue\Revs\Command;
@@ -26,12 +27,12 @@ use function sprintf;
 
 final class RevCommand extends Command
 {
-    /** @var SymfonyStyle */
-    private $io;
+    private SymfonyStyle|null $io;
 
     protected function configure(): void
     {
         parent::configure();
+
         $this->setName('netglue:rev');
         $this->setDescription('rev file names and replace references to them in files');
 
@@ -39,21 +40,21 @@ final class RevCommand extends Command
             'source',
             's',
             InputOption::VALUE_REQUIRED,
-            'A glob to match file names that will be revved'
+            'A glob to match file names that will be revved',
         );
 
         $this->addOption(
             'target',
             't',
             InputOption::VALUE_REQUIRED,
-            'A target directory, where the revved copies will be placed'
+            'A target directory, where the revved copies will be placed',
         );
 
         $this->addOption(
             'delete',
             'd',
             InputOption::VALUE_NONE,
-            'Whether to delete old revisions or not'
+            'Whether to delete old revisions or not',
         );
 
         $this->addOption(
@@ -61,14 +62,14 @@ final class RevCommand extends Command
             'c',
             InputOption::VALUE_OPTIONAL,
             'The number of old revisions to keep. Defaults to none',
-            0
+            0,
         );
 
         $this->addOption(
             'replace',
             'r',
             InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
-            'Replacement targets such as layout files, HTML files etc'
+            'Replacement targets such as layout files, HTML files etc',
         );
     }
 
@@ -96,7 +97,7 @@ final class RevCommand extends Command
         } catch (Throwable $exception) {
             $this->io->error(sprintf(
                 'Invalid Option: %s',
-                $exception->getMessage()
+                $exception->getMessage(),
             ));
 
             return -1;
@@ -110,7 +111,7 @@ final class RevCommand extends Command
         if (! count($sources)) {
             $this->io->warning(sprintf(
                 'The --source|-s argument %s yielded no source files to process',
-                $sourceGlob
+                $sourceGlob,
             ));
 
             return 0;
@@ -123,7 +124,7 @@ final class RevCommand extends Command
                     'File %s copied as %s. %d old revisions removed',
                     $revvedFile->source(),
                     $revvedFile->destination(),
-                    count($revvedFile->deletedRevisions())
+                    count($revvedFile->deletedRevisions()),
                 ));
             }
 
@@ -165,7 +166,7 @@ final class RevCommand extends Command
             'Replaced %d references to %s within %d target files',
             $count,
             $info->source(),
-            count($targets)
+            count($targets),
         ));
     }
 }

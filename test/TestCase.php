@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Netglue\RevsTest;
@@ -19,12 +20,12 @@ use function unlink;
 
 class TestCase extends PHPUnit
 {
-    /** @var string */
-    protected $varDir;
+    protected string $varDir;
 
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->varDir = __DIR__ . '/fixture/var';
         if (file_exists($this->varDir)) {
             return;
@@ -36,6 +37,7 @@ class TestCase extends PHPUnit
     protected function tearDown(): void
     {
         parent::tearDown();
+
         if (is_dir($this->varDir)) {
             foreach (glob($this->varDir . '/*') as $file) {
                 if (! is_file($file)) {
