@@ -11,11 +11,11 @@
          colors="true"
          cacheDirectory=".cache"
 >
-    <coverage>
+    <source>
         <include>
             <directory suffix=".php">./src</directory>
         </include>
-    </coverage>
+    </source>
     <testsuites>
         <testsuite name="Tests">
             <directory>./test</directory>
