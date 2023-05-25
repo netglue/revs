@@ -103,7 +103,7 @@ final class RevCommand extends Command
 
         $revver = new Revver($options);
         $sourceGlob = $input->getOption('source');
-        assert(is_string($sourceGlob));
+        assert(is_string($sourceGlob) && $sourceGlob !== '');
         $sources = glob($sourceGlob);
         assert(is_array($sources));
         if (! count($sources)) {
@@ -140,7 +140,7 @@ final class RevCommand extends Command
         $targets = [];
         $count = 0;
         foreach ($args as $glob) {
-            assert(is_string($glob));
+            assert(is_string($glob) && $glob !== '');
             $globbed = glob($glob);
             assert(is_array($globbed));
 
