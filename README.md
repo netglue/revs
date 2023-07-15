@@ -5,6 +5,7 @@
 Probably re-inventing the wheel here, but I wanted to be able to rev front-end resource file names in a predictable way with options to automatically delete old revisions keeping either none of them or a specific number of the most recent ones. There are javascript tools that do this but at the time of writing, I couldn't find anything I liked in JS land that you could just fire off from an npm package script easily. There's plenty for Grunt and Gulp if you're using those.
 
 The main use-case for this lib is to be triggered by a script in your `package.json` something like this:
+
 ```json
 {
     "scripts": {
@@ -13,10 +14,12 @@ The main use-case for this lib is to be triggered by a script in your `package.j
 }
 ```
 
-## Install with composer:
+## Install with composer
+
 ```bash
 composer require netglue/revs
 ```
+
 In order to use the tools, make sure that you've `require`d composers `vendor/autoload.php`, or [use the shipped binary](#symfony-command) in `vendor/bin/rev`
 
 ## Operation
@@ -37,6 +40,7 @@ var_dump($result->destination()); // Yields the full path and filename of the co
 ```
 
 The options object can be fed an array like this:
+
 ```php
 use Netglue\Revs\RevverOptions;
 $options = RevverOptions::fromArray([
@@ -80,7 +84,6 @@ $resultingString = Replacer::replaceInString($someString, $result, $count);
 Assuming you have somehow received notification that your JS is built to a file located in `/build/index.js` and you want that copied to `/public/assets` with a revved file name and all the html files in `/public` to be updated with the new file name:
 
 ```php
-
 $options = RevverOptions::fromArray([
     'destinationDirectory' => '/public/assets',
     'cleanUp' => true,
@@ -100,7 +103,6 @@ foreach ($files as $html) {
     $count += Replacer::replaceInFile(sprintf('/public/%s', $html), $info);
 }
 printf('Replaced %d references over %d files', $count, count($files));
-
 ```
 
 ## Symfony Command
@@ -119,7 +121,6 @@ PR's are welcomed. Please write tests for new features.
 
 You're welcome to file issues, but please understand that finding the time to answer support requests is very limited
 so there might be a long wait for an answer.
-
 
 ## About
 
