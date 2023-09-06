@@ -10,6 +10,7 @@ use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 use RuntimeException;
+use Webmozart\Assert\Assert;
 
 use function array_map;
 use function array_slice;
@@ -39,6 +40,7 @@ final class Revver
     {
     }
 
+    /** @param non-empty-string $file */
     public function revFile(string $file): RevvedFile
     {
         $this->assertReadableFile($file);
@@ -50,13 +52,15 @@ final class Revver
             ));
         }
 
-        $matcher = $this->filenameMatchPattern(basename($file));
+        $sourceFileBasename = basename($file);
+        Assert::stringNotEmpty($sourceFileBasename);
+        $matcher = $this->filenameMatchPattern($sourceFileBasename);
         $existing = $this->getPathOfExistingMatchingHash($file, $hash);
         if ($existing) {
             return new RevvedFile($file, $existing, $matcher);
         }
 
-        $info = pathinfo(basename($file));
+        $info = pathinfo($sourceFileBasename);
         $basename = $info['filename'];
         $extension = isset($info['extension']) ? '.' . $info['extension'] : '';
         $fileName = sprintf(
@@ -97,6 +101,11 @@ final class Revver
         return $this->uuidFactory;
     }
 
+    /**
+     * @param non-empty-string $sourceFileBasename
+     *
+     * @return non-empty-string
+     */
     private function filenameMatchPattern(string $sourceFileBasename): string
     {
         $info = pathinfo($sourceFileBasename);
@@ -114,10 +123,17 @@ final class Revver
         );
     }
 
+    /**
+     * @param non-empty-string $sourceFilePath
+     * @param non-empty-string $hash
+     *
+     * @return non-empty-string|null
+     */
     private function getPathOfExistingMatchingHash(string $sourceFilePath, string $hash): string|null
     {
         $basename = basename($sourceFilePath);
-        $pattern  = $this->filenameMatchPattern($basename);
+        Assert::stringNotEmpty($basename);
+        $pattern = $this->filenameMatchPattern($basename);
         foreach (new DirectoryIterator($this->options->destinationDirectory()) as $fileInfo) {
             if (! $fileInfo->isFile()) {
                 continue;
@@ -170,7 +186,9 @@ final class Revver
     /** @return string[] */
     private function buildUnlinkList(RevvedFile $info): array
     {
-        $pattern = $this->filenameMatchPattern(basename($info->source()));
+        $sourceFileBasename = basename($info->source());
+        Assert::stringNotEmpty($sourceFileBasename);
+        $pattern = $this->filenameMatchPattern($sourceFileBasename);
         /**
          * @psalm-var list<array{
          *     uuid: UuidInterface,
