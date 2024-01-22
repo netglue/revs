@@ -62,7 +62,7 @@ final class Replacer
         }
 
         $content = file_get_contents($sourceFile);
-        if (! $content) {
+        if ($content === false) {
             throw new RuntimeException(sprintf(
                 'Cannot read the contents of the file %s',
                 $sourceFile,

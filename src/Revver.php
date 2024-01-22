@@ -56,7 +56,7 @@ final class Revver
         Assert::stringNotEmpty($sourceFileBasename);
         $matcher = $this->filenameMatchPattern($sourceFileBasename);
         $existing = $this->getPathOfExistingMatchingHash($file, $hash);
-        if ($existing) {
+        if ($existing !== null) {
             return new RevvedFile($file, $existing, $matcher);
         }
 

@@ -85,7 +85,7 @@ final class RevverOptions
 
     public function destinationDirectory(): string
     {
-        if (! $this->destinationDirectory) {
+        if ($this->destinationDirectory === null) {
             throw new RuntimeException('The destination directory has not been set');
         }
 
