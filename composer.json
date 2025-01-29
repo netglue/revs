@@ -15,7 +15,7 @@
         "prefer-stable" : true,
         "sort-packages": true,
         "platform": {
-            "php": "8.1.99"
+            "php": "8.2.99"
         },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
@@ -25,17 +25,20 @@
         "bin/rev"
     ],
     "require": {
-        "php": "~8.1 || ~8.2 || ~8.3",
-        "ramsey/uuid": "^4",
-        "symfony/console": "^5 || ^6 || ^7",
+        "php": "~8.2 || ~8.3 || ~8.4",
+        "ramsey/uuid": "^4.7.0",
+        "symfony/console": "^6.4.17 || ^7.2",
         "webmozart/assert": "^1.11"
     },
     "require-dev": {
         "doctrine/coding-standard": "^12.0.0",
-        "phpunit/phpunit": "^10.5.9",
-        "psalm/plugin-phpunit": "^0.19.0",
-        "squizlabs/php_codesniffer": "^3.8.1",
-        "vimeo/psalm": "^5.20"
+        "phpunit/phpunit": "^11.5.4",
+        "psalm/plugin-phpunit": "^0.19.2",
+        "squizlabs/php_codesniffer": "^3.11.3",
+        "vimeo/psalm": "^6.0.0"
+    },
+    "conflict": {
+        "symfony/string": "<6.4.15 || <7.2.0"
     },
     "autoload": {
         "psr-4": {

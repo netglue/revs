@@ -7,6 +7,7 @@ namespace Netglue\RevsTest;
 use PHPUnit\Framework\TestCase as PHPUnit;
 use RuntimeException;
 
+use function assert;
 use function fclose;
 use function file_exists;
 use function fopen;
@@ -14,6 +15,7 @@ use function ftruncate;
 use function glob;
 use function is_dir;
 use function is_file;
+use function is_iterable;
 use function mkdir;
 use function rmdir;
 use function unlink;
@@ -39,7 +41,10 @@ class TestCase extends PHPUnit
         parent::tearDown();
 
         if (is_dir($this->varDir)) {
-            foreach (glob($this->varDir . '/*') as $file) {
+            $list = glob($this->varDir . '/*');
+            assert(is_iterable($list));
+
+            foreach ($list as $file) {
                 if (! is_file($file)) {
                     continue;
                 }
