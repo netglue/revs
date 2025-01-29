@@ -8,6 +8,10 @@
          displayDetailsOnTestsThatTriggerDeprecations="true"
          displayDetailsOnSkippedTests="true"
          displayDetailsOnIncompleteTests="true"
+         failOnPhpunitDeprecation="true"
+         failOnDeprecation="true"
+         failOnWarning="true"
+         failOnNotice="true"
          colors="true"
          cacheDirectory=".cache"
 >
