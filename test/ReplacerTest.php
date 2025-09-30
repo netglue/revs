@@ -7,25 +7,25 @@ namespace Netglue\RevsTest;
 use Netglue\Revs\Replacer;
 use Netglue\Revs\Revver;
 use Netglue\Revs\RevverOptions;
+use Override;
 
 use function basename;
 use function copy;
 use function sprintf;
 
-class ReplacerTest extends TestCase
+final class ReplacerTest extends TestCase
 {
-    private RevverOptions $options;
-
     private Revver $revver;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->options = RevverOptions::fromArray([
+        $options = RevverOptions::fromArray([
             'destinationDirectory' => $this->varDir,
         ]);
-        $this->revver = new Revver($this->options);
+        $this->revver = new Revver($options);
     }
 
     public function testStringReplacement(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Netglue\RevsTest;
 
+use Override;
 use PHPUnit\Framework\TestCase as PHPUnit;
 use RuntimeException;
 
@@ -24,6 +25,7 @@ class TestCase extends PHPUnit
 {
     protected string $varDir;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -36,6 +38,7 @@ class TestCase extends PHPUnit
         mkdir($this->varDir);
     }
 
+    #[Override]
     protected function tearDown(): void
     {
         parent::tearDown();

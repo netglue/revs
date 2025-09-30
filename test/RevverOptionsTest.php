@@ -16,7 +16,7 @@ use function file_exists;
 use function mkdir;
 use function rmdir;
 
-class RevverOptionsTest extends TestCase
+final class RevverOptionsTest extends TestCase
 {
     public function testFromArray(): void
     {
