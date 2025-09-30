@@ -8,6 +8,7 @@ use Netglue\Revs\Replacer;
 use Netglue\Revs\RevvedFile;
 use Netglue\Revs\Revver;
 use Netglue\Revs\RevverOptions;
+use Override;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -28,6 +29,7 @@ final class RevCommand extends Command
 {
     private SymfonyStyle|null $io = null;
 
+    #[Override]
     protected function configure(): void
     {
         parent::configure();
@@ -72,6 +74,7 @@ final class RevCommand extends Command
         );
     }
 
+    #[Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);

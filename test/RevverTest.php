@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Netglue\Revs\RevvedFile;
 use Netglue\Revs\Revver;
 use Netglue\Revs\RevverOptions;
+use Override;
 
 use function basename;
 use function chmod;
@@ -18,12 +19,13 @@ use function file_put_contents;
 use function touch;
 use function unlink;
 
-class RevverTest extends TestCase
+final class RevverTest extends TestCase
 {
     private RevverOptions $options;
 
     private Revver $revver;
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();

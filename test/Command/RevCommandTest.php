@@ -6,16 +6,18 @@ namespace Netglue\RevsTest\Command;
 
 use Netglue\Revs\Command\RevCommand;
 use Netglue\RevsTest\TestCase;
+use Override;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 use function basename;
 
-class RevCommandTest extends TestCase
+final class RevCommandTest extends TestCase
 {
     private Application $app;
 
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();
