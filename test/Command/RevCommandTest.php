@@ -28,7 +28,7 @@ final class RevCommandTest extends TestCase
     public function addCommand(): RevCommand
     {
         $command = new RevCommand();
-        $this->app->add($command);
+        $this->app->addCommand($command);
 
         return $command;
     }

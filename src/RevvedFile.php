@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Netglue\Revs;
 
-final class RevvedFile
+final readonly class RevvedFile
 {
     /**
      * @param non-empty-string $sourceFile
@@ -13,10 +13,10 @@ final class RevvedFile
      * @param list<string>     $deletedRevisions
      */
     public function __construct(
-        private readonly string $sourceFile,
-        private readonly string $destinationFile,
-        private readonly string $matchPattern,
-        private readonly array $deletedRevisions = [],
+        private string $sourceFile,
+        private string $destinationFile,
+        private string $matchPattern,
+        private array $deletedRevisions = [],
     ) {
     }
 
