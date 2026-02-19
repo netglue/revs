@@ -52,7 +52,6 @@ final class Revver
         }
 
         $sourceFileBasename = basename($file);
-        assert($sourceFileBasename !== '');
         $matcher = $this->filenameMatchPattern($sourceFileBasename);
         $existing = $this->getPathOfExistingMatchingHash($file, $hash);
         if ($existing !== null) {
@@ -131,7 +130,6 @@ final class Revver
     private function getPathOfExistingMatchingHash(string $sourceFilePath, string $hash): string|null
     {
         $basename = basename($sourceFilePath);
-        assert($basename !== '');
         $pattern = $this->filenameMatchPattern($basename);
         foreach (new DirectoryIterator($this->options->destinationDirectory()) as $fileInfo) {
             if (! $fileInfo->isFile()) {
@@ -186,7 +184,6 @@ final class Revver
     private function buildUnlinkList(RevvedFile $info): array
     {
         $sourceFileBasename = basename($info->source());
-        assert($sourceFileBasename !== '');
         $pattern = $this->filenameMatchPattern($sourceFileBasename);
         /**
          * @psalm-var list<array{
