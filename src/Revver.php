@@ -10,7 +10,6 @@ use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 use RuntimeException;
-use Webmozart\Assert\Assert;
 
 use function array_map;
 use function array_slice;
@@ -53,7 +52,6 @@ final class Revver
         }
 
         $sourceFileBasename = basename($file);
-        Assert::stringNotEmpty($sourceFileBasename);
         $matcher = $this->filenameMatchPattern($sourceFileBasename);
         $existing = $this->getPathOfExistingMatchingHash($file, $hash);
         if ($existing !== null) {
@@ -132,7 +130,6 @@ final class Revver
     private function getPathOfExistingMatchingHash(string $sourceFilePath, string $hash): string|null
     {
         $basename = basename($sourceFilePath);
-        Assert::stringNotEmpty($basename);
         $pattern = $this->filenameMatchPattern($basename);
         foreach (new DirectoryIterator($this->options->destinationDirectory()) as $fileInfo) {
             if (! $fileInfo->isFile()) {
@@ -187,7 +184,6 @@ final class Revver
     private function buildUnlinkList(RevvedFile $info): array
     {
         $sourceFileBasename = basename($info->source());
-        Assert::stringNotEmpty($sourceFileBasename);
         $pattern = $this->filenameMatchPattern($sourceFileBasename);
         /**
          * @psalm-var list<array{
