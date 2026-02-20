@@ -11,6 +11,7 @@
     <projectFiles>
         <directory name="src"/>
         <directory name="test"/>
+        <directory name="bin"/>
         <ignoreFiles>
             <directory name="vendor"/>
         </ignoreFiles>

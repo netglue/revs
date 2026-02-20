@@ -33,5 +33,5 @@ require REVS_COMPOSER_INSTALL;
 
 $console = new Application();
 $console->setName('Filename Revving Tools');
-$console->add(new RevCommand);
+$console->addCommand(new RevCommand);
 $console->run();
